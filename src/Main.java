@@ -63,6 +63,21 @@ class Main{
         return null;
     }
 
+    private static void exibirCardapio(){
+        System.out.println("\n----------------- CARDÁPIO COMPLETO -----------------");
+        System.out.printf("%-5s %-25s %-10s %-8s\n", "ID", "NOME", "PREÇO", "ESTOQUE");
+        System.out.println("-----------------------------------------------------");
+        for (Produto p : cardapio) {
+            System.out.printf("%-5d %-25s R$ %-7.2f %-8d\n",
+                    p.getId(), p.getNome(), p.getPreco(), p.getEstoque());
+        }
+        System.out.println("-----------------------------------------------------");
+    }
+
+    private static void menuFuncionario(Funcionario f){
+
+    }
+
 
 
     public static void main(String[] args) {
