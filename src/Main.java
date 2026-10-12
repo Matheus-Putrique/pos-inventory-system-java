@@ -75,7 +75,72 @@ class Main{
     }
 
     //Menu que Cozinheiros e Atendentes usam
-    private static void menuOperacional(Funcionario funcionario, Scanner scanner){}
+    private static void menuOperacional(Funcionario funcionario, Scanner scanner){
+        boolean executando = true;
+
+        while(executando){
+            System.out.println("Menu de operação:");
+            System.out.println("Funcionário: " + funcionario.getNome());
+            System.out.println("1- Exibir cardápio disponível");
+            System.out.println("2- Sair do painel");
+            System.out.println("Selecione o opção: ");
+
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch(opcao){
+
+                case 1:
+                    exibirCardapio();
+                    break;
+
+                case 2:
+                    System.out.println("Saindo do sistema... ");
+                    executando = false;
+                    break;
+
+                default:
+                    System.out.println("Opção inválida");
+                    break;
+            }
+        }
+    }
+    // Menu para Gerentes e Chefe
+    private static void menuGerencial(Funcionario funcionario, Scanner scanner){
+        boolean executando = true;
+
+        while(executando){
+            System.out.println("Menu Gerencial:");
+            System.out.println("Funcionário: " + funcionario.getNome());
+            System.out.println("1- Exibir cardápio disponível");
+            System.out.println("2- Repor estoque");
+            System.out.println("3- Sair do painel");
+            System.out.println("Selecione o opção: ");
+
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch(opcao){
+
+                case 1:
+                    exibirCardapio();
+                    break;
+
+                case 2:
+                    System.out.println("Sistema a ser implementado em breve");
+                    break;
+
+                case 3:
+                    System.out.println("Saindo do sistema...");
+                    executando = false;
+                    break;
+
+                default:
+                    System.out.println("Opção inválida");
+                    break;
+            }
+        }
+    }
 
     private static void loginFuncionarios(Scanner scanner){
         System.out.println("Tela de Login");
