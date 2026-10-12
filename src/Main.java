@@ -74,8 +74,32 @@ class Main{
         System.out.println("-----------------------------------------------------");
     }
 
-    private static void menuFuncionario(Funcionario f){
+    //Menu que Cozinheiros e Atendentes usam
+    private static void menuOperacional(Funcionario funcionario, Scanner scanner){}
 
+    private static void loginFuncionarios(Scanner scanner){
+        System.out.println("Tela de Login");
+        System.out.println("Matrícula ou nome: ");
+        String registro = scanner.nextLine();
+
+        System.out.println("Senha: ");
+        String senha = scanner.nextLine();
+
+        Funcionario encontrado = null;
+
+        for(Funcionario f : funcionarios){
+            if(f.getMatricula().equalsIgnoreCase(registro) || f.getNome().equalsIgnoreCase(registro)){
+                encontrado = f;
+                break;
+            }
+
+        }
+        if(encontrado != null && encontrado.autenticar(senha)){
+            System.out.println("Bem-vindo " + encontrado.getNome() + " Cargo: " + encontrado.getCargo());
+        }
+        else{
+            System.out.println(" Matrícula/nome ou senha incorretos!");
+        }
     }
 
 
