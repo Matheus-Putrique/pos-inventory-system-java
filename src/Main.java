@@ -142,6 +142,23 @@ class Main{
         }
     }
 
+    private static void rotearMenu(Funcionario funcionario, Scanner scanner){
+        switch(funcionario.getCargo()){
+            case CHEFE:
+            case GERENTE:
+                menuGerencial(funcionario, scanner);
+                break;
+
+            case ATENDENTE:
+            case COZINHEIRO:
+                menuOperacional(funcionario, scanner);
+                break;
+
+            default:
+                System.out.println("Perfil não configurado");
+        }
+    }
+
     private static void loginFuncionarios(Scanner scanner){
         System.out.println("Tela de Login");
         System.out.println("Matrícula ou nome: ");
@@ -161,11 +178,15 @@ class Main{
         }
         if(encontrado != null && encontrado.autenticar(senha)){
             System.out.println("Bem-vindo " + encontrado.getNome() + " Cargo: " + encontrado.getCargo());
+
+            rotearMenu(encontrado, scanner);
         }
         else{
             System.out.println(" Matrícula/nome ou senha incorretos!");
         }
     }
+
+    private static void reduzirEstoque(Scanner scanner){}
 
 
 

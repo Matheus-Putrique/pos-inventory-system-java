@@ -53,5 +53,12 @@ public class Produto {
         return true;
 
     }
+    public boolean adicionarEstoque(int quantidade){
+        if(quantidade <= 0){
+            return false;
+        }
+        this.estoque += quantidade;
+        return true;
+    }
 
 }
