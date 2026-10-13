@@ -45,6 +45,8 @@ public class Produto {
         this.estoque = estoque;
     }
 
+
+
     public boolean reduzirEstoque(int quantidade){
         if(this.estoque <= 0 || this.estoque < quantidade){
             return false;
@@ -60,5 +62,6 @@ public class Produto {
         this.estoque += quantidade;
         return true;
     }
+
 
 }

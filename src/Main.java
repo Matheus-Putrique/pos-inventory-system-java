@@ -127,7 +127,7 @@ class Main{
                     break;
 
                 case 2:
-                    System.out.println("Sistema a ser implementado em breve");
+                    reporEstoque(scanner);
                     break;
 
                 case 3:
@@ -186,7 +186,150 @@ class Main{
         }
     }
 
-    private static void reduzirEstoque(Scanner scanner){}
+    private static void reporEstoque(Scanner scanner){
+        exibirCardapio();
+
+        System.out.println("Escreva o código que deseja repor: ");
+        int codigo = scanner.nextInt();
+        scanner.nextLine();
+
+        Produto produtoEncontrado = buscarProdutoId(codigo);
+
+        if(produtoEncontrado == null){
+            System.out.println("Produto não encontrado!");
+            return;
+        }
+
+        System.out.println("Quantidade adicionada: ");
+        int quantidade = scanner.nextInt();
+        scanner.nextLine();
+
+        if(produtoEncontrado.adicionarEstoque(quantidade)){
+
+            System.out.println("Quantidade atualizada: " + produtoEncontrado.getNome() + " Estoque: " + produtoEncontrado.getEstoque());
+        }
+        else{
+            System.out.println("Erro!! Quantidade tem que ser maior que 0");
+        }
+    }
+
+    private static void adicionarProduto(Scanner scanner){
+        System.out.println("CADASTRO DE PRODUTO");
+        System.out.println("Código do produto: ");
+        int codigo = scanner.nextInt();
+        scanner.nextLine();
+
+        if(buscarProdutoId(codigo) != null){
+            System.out.println("Erro, Código já existente!!");
+            return;
+        }
+
+        System.out.println("Nome do produto: ");
+        String nome = scanner.nextLine();
+
+        System.out.println("Preco do produto: ");
+        double preco = scanner.nextDouble();
+        scanner.nextLine();
+
+        System.out.println("Quantidade adicionada: ");
+        int quantidade = scanner.nextInt();
+        scanner.nextLine();
+
+        Produto novoProduto = new Produto(codigo, nome, preco, quantidade);
+
+        cardapio.add(novoProduto);
+        System.out.println("Produto cadastrado com sucesso!");
+    }
+
+    private static void editarProduto(Scanner scanner){
+        System.out.println("EDITOR DE PRODUTO");
+
+        exibirCardapio();
+
+        System.out.println("Digite o código do produto: ");
+        int codigo = scanner.nextInt();
+        scanner.nextLine();
+
+        Produto produto = buscarProdutoId(codigo);
+
+        if(produto == null){
+            System.out.println("Código não encontrado!");
+            return;
+        }
+
+        System.out.println("O que deseja alterar no produto: ");
+        System.out.println("1- Nome do produto");
+        System.out.println("2- Preco do produto");
+        System.out.println("3- Sair");
+        System.out.println("Opção: ");
+
+        int opcao = scanner.nextInt();
+        scanner.nextLine();
+
+        switch(opcao){
+
+            case 1:
+                System.out.println("Digite o novo nome do produto: ");
+                String nome = scanner.nextLine();
+                produto.setNome(nome);
+                break;
+
+            case 2:
+                System.out.println("Digite o novo preco do produto: ");
+                double preco = scanner.nextDouble();
+                scanner.nextLine();
+                produto.setPreco(preco);
+                break;
+
+            case 3:
+                return;
+
+            default:
+                System.out.println("Erro!!!");
+                break;
+        }
+
+    }
+
+    private static void excluirProduto(Scanner scanner){
+        System.out.println("EXCLUIR PRODUTO");
+
+        exibirCardapio();
+
+        System.out.println("Digite o código do produto a se deletar: ");
+        int codigo = scanner.nextInt();
+        scanner.nextLine();
+
+        Produto produtoDeletar =  buscarProdutoId(codigo);
+
+        if(produtoDeletar == null){
+            System.out.println("Produto não encontrado!");
+            return;
+        }
+
+        System.out.println("Tem certeza que deseja excluir?");
+        System.out.println("1- Sim");
+        System.out.println("2- Não");
+        System.out.println("Opcao: ");
+
+        int opcao = scanner.nextInt();
+        scanner.nextLine();
+
+        switch(opcao){
+
+            case 1:
+                cardapio.remove(produtoDeletar);
+                System.out.println("Produto excluido com sucesso!");
+                break;
+
+            case 2:
+                System.out.println("Exclusão cancelada!");
+                break;
+
+            default:
+                System.out.println("Opção inválida!");
+        }
+    }
 
 
 
