@@ -6,6 +6,8 @@ class Main{
 
     private static List<Produto> cardapio = new ArrayList<>();
     private static List<Funcionario> funcionarios = new ArrayList<>();
+    private static List<Pedido> pedidosPendentes = new ArrayList<>();
+
 
     private static void carregarDadosInicias(){
         cardapio.add(new Produto(101, "Smash Clássico", 24.90, 15));
@@ -81,8 +83,9 @@ class Main{
         while(executando){
             System.out.println("Menu de operação:");
             System.out.println("Funcionário: " + funcionario.getNome());
-            System.out.println("1- Exibir cardápio disponível");
-            System.out.println("2- Sair do painel");
+            System.out.println("1- Fila de pedidos");
+            System.out.println("2- Concluir pedido");
+            System.out.println("3- Sair");
             System.out.println("Selecione o opção: ");
 
             int opcao = scanner.nextInt();
@@ -91,11 +94,48 @@ class Main{
             switch(opcao){
 
                 case 1:
-                    exibirCardapio();
+                    if(pedidosPendentes.isEmpty()){
+                        System.out.println("Nenhum pedido pendente");
+                    }
+                    else{
+                        System.out.println("Lista de pedidos: ");
+                        for(Pedido p : pedidosPendentes){
+                            System.out.println("Pedido: " + p.getNumero() + " Cliente: " + p.getCliente());
+                            for(ItemPedido item : p.getItens()){
+                                System.out.println("  " + item.getQuantidade() + "x " + item.getProduto().getNome());
+                            }
+                        }
+                    }
                     break;
 
                 case 2:
-                    System.out.println("Saindo do sistema... ");
+                    if (pedidosPendentes.isEmpty()) {
+                        System.out.println("Fila vazia! Nada para despachar.");
+                        break;
+                    }
+
+                    System.out.print("Informe o número do pedido concluído: ");
+                    int numPedido = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Pedido pedidoConcluir = null;
+                    for (Pedido p : pedidosPendentes) {
+                        if (p.getNumero() == numPedido) {
+                            pedidoConcluir = p;
+                            break;
+                        }
+                    }
+
+                    if (pedidoConcluir != null) {
+                        pedidosPendentes.remove(pedidoConcluir);
+                        System.out.println("Pedido #" + numPedido + " finalizado e entregue!");
+                    } else {
+                        System.out.println("Pedido não encontrado na fila!");
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("Saindo do painel operacional...");
                     executando = false;
                     break;
 
@@ -114,7 +154,10 @@ class Main{
             System.out.println("Funcionário: " + funcionario.getNome());
             System.out.println("1- Exibir cardápio disponível");
             System.out.println("2- Repor estoque");
-            System.out.println("3- Sair do painel");
+            System.out.println("3- Cadastrar produto");
+            System.out.println("4- Editar produto");
+            System.out.println("5- Remover produto");
+            System.out.println("6- Sair do painel");
             System.out.println("Selecione o opção: ");
 
             int opcao = scanner.nextInt();
@@ -131,7 +174,19 @@ class Main{
                     break;
 
                 case 3:
-                    System.out.println("Saindo do sistema...");
+                    adicionarProduto(scanner);
+                    break;
+
+                case 4:
+                    editarProduto(scanner);
+                    break;
+
+                case 5:
+                    excluirProduto(scanner);
+                    break;
+
+                case 6:
+                    System.out.println("Saindo do sistema... ");
                     executando = false;
                     break;
 
@@ -329,6 +384,70 @@ class Main{
             default:
                 System.out.println("Opção inválida!");
         }
+    }
+
+    private static void atendimento(Scanner scanner){
+        System.out.println("Bem-Vindo a Lanchonete");
+        System.out.println("Podemos te chamar como? ");
+        System.out.println("Nome: ");
+        String nome = scanner.nextLine();
+
+        Pedido pedido = new Pedido(nome);
+        boolean escolher = true;
+
+        while(escolher){
+            exibirCardapio();
+            System.out.println("Digite o código do produto(digite 0 para sair): ");
+            int codigo = scanner.nextInt();
+            scanner.nextLine();
+
+            if(codigo == 0){
+                System.out.println("Saindo...");
+                escolher = false;
+                break;
+            }
+
+            Produto produto = buscarProdutoId(codigo);
+
+            if(buscarProdutoId(codigo) == null){
+                System.out.println("Código não localizado");
+                continue;
+            }
+
+
+            System.out.println("Quantidade: ");
+             int quantidade = scanner.nextInt();
+            scanner.nextLine();
+
+            if(quantidade <= 0){
+                System.out.println("Quantidade deve ser maior que 0");
+                continue;
+            }
+
+            ItemPedido ped = new ItemPedido(produto, quantidade);
+
+            if(pedido.adicionarItem(ped)){
+                System.out.println("Produto adicionado!");
+            }
+
+        }
+
+        if(pedido.getItens().isEmpty()){
+            System.out.println("Nenhum item adicionado! Pedido encerrado");
+            return;
+        }
+
+        System.out.println("Comanda " + pedido.getNumero());
+        System.out.println("Nome: " + pedido.getCliente());
+
+        for(ItemPedido p : pedido.getItens()){
+            System.out.println("Qtd: " + p.getQuantidade() + " " + p.getProduto().getNome());
+            System.out.println("Subtotal: R$" + p.subTotal());
+        }
+
+        System.out.println("Total da compra: " + pedido.calcularTotal());
+        pedidosPendentes.add(pedido);
+        System.out.println("Pedido encaminhado");
     }
 
 

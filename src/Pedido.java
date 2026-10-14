@@ -2,12 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido{
+    private static int adicionarNumero = 1;
+
     private int numero;
     private String cliente;
     private List<ItemPedido> itens;
 
-    public Pedido(int numero, String cliente, List<ItemPedido> itens) {
-        this.numero = numero;
+    public Pedido(String cliente) {
+        this.numero = adicionarNumero;
         this.cliente = cliente;
         this.itens = new ArrayList<>();
     }
@@ -20,7 +22,7 @@ public class Pedido{
             return false;
         }
 
-         this.itens.add(item);
+        this.itens.add(item);
         return true;
     }
     public double calcularTotal(){
@@ -37,5 +39,13 @@ public class Pedido{
 
     public void setItens(List<ItemPedido> itens) {
         this.itens = itens;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public String getCliente() {
+        return cliente;
     }
 }
