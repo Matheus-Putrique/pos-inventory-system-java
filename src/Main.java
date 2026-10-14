@@ -449,12 +449,80 @@ class Main{
         pedidosPendentes.add(pedido);
         System.out.println("Pedido encaminhado");
     }
+    private static Funcionario buscarPorSenha(String senha) {
+        for (Funcionario f : funcionarios) {
+            if (f.autenticar(senha)) {
+                return f;
+            }
+        }
+        return null;
+    }
+
+    private static void realizarLogin(Scanner scanner) {
+        System.out.println("LOGIN DO FUNCIONÁRIO");
+        System.out.print("Digite a senha: ");
+        String senha = scanner.nextLine();
+
+        Funcionario func = buscarPorSenha(senha);
+
+        if (func == null) {
+            System.out.println("Senha incorreta!");
+            return;
+        }
+
+        System.out.println("Login efetuado com sucesso. Bem-vindo(a), " + func.getNome() + "!");
+
+        if (func.getCargo() == Cargo.GERENTE || func.getCargo() == Cargo.CHEFE) {
+            menuGerencial(func, scanner);
+        } else if (func.getCargo() == Cargo.ATENDENTE || func.getCargo() == Cargo.COZINHEIRO) {
+            menuOperacional(func, scanner);
+        } else {
+            System.out.println("Cargo sem menu definido.");
+        }
+    }
 
 
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        carregarDadosInicias();
+
+        boolean executando = true;
+
+        while (executando) {
+            System.out.println("==============================");
+            System.out.println("      BURGER HOUSE - PDV      ");
+            System.out.println("==============================");
+            System.out.println("1 - Autoatendimento (Cliente)");
+            System.out.println("2 - Área de Colaboradores (Login)");
+            System.out.println("0 - Encerrar Sistema");
+            System.out.print("Selecione uma opção: ");
+
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    atendimento(scanner);
+                    break;
+
+                case 2:
+                    realizarLogin(scanner);
+                    break;
+
+                case 0:
+                    System.out.println("Encerrando o sistema");
+                    executando = false;
+                    break;
+
+                default:
+                    System.out.println("Opção inválida! Tente novamente.");
+                    break;
+            }
+        }
+
+        scanner.close();
 
 
     }
